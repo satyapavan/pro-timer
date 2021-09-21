@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Pro Timer</title>
+    <meta name="description" content="countdown timer" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="shortcut icon" sizes="196x196" href="icon-196.png" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link rel="apple-touch-icon" href="icon-152.png" />
+
+    <style>
+      html, body {
+        margin: 0;
+        box-sizing: border-box;
+        height: 100vh;
+        overflow: hidden;
+      }
+      html {
+        padding: 0;
+        background: #525564;
+      }
+      body {
+        padding: 20px;
+      }
+
+      .square {
+        margin: auto;
+      }
+      @media all and (orientation: landscape) {
+        .square {
+          width: calc(100vh - 40px);
+          height: calc(100vh - 40px);
+        }
+      }
+      @media all and (orientation: portrait) {
+        .square {
+          width: calc(100vw - 40px);
+          height: calc(100vw - 40px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pie" class="square"/>
+
+    <script src="progressbar.min.js"></script>
+    <script>
+      var duration = Number.parseInt(location.hash.replace('#', ''));
+      if (isNaN(duration)) {
+        duration = 5;
+      }
+
+      var pie = new ProgressBar.Circle('#pie', {
+        strokeWidth: 50,
+        easing: 'linear',
+        trailColor: '#74828F',
+        trailWidth: 50,
+        svgStyle: null
+      });
+
+      pie.setActive = function(active) {
+        pie.path.setAttribute('stroke', active ? '#96C0CE' : '#C25B56');
+      };
+
+      pie.start = function() {
+        pie.set(0);
+        pie.setActive(true);
+        pie.animate(1, { duration: duration * 60000 }, pie.setActive);
+      };
+      document.ondblclick = pie.start;
+      pie.start();
+    </script>
+  </body>
+</html>
